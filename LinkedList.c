@@ -5,7 +5,7 @@
  */
 LinkedList *create_linked_list()
 {
-    LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
+    LinkedList *list = malloc(sizeof(LinkedList));
     if (!list)
         return NULL;
     list->size = 0;
@@ -45,38 +45,38 @@ void add(LinkedList *list, int index, int value)
     if (!is_position_index(list, index))
         return;
 
-    ChainNode *add = (ChainNode *)malloc(sizeof(ChainNode));
-    if (!add)
+    ChainNode *new_node = malloc(sizeof(ChainNode));
+    if (!new_node)
         return;
-    add->value = value;
-    add->next = NULL;
-    add->pre = NULL;
+    new_node->value = value;
+    new_node->next = NULL;
+    new_node->pre = NULL;
 
     if (list->size == 0)
     {
-        list->head = add;
-        list->tail = add;
+        list->head = new_node;
+        list->tail = new_node;
     }
     else if (list->size == index)
     {
         // linkLast
-        list->tail->next = add;
-        add->pre = list->tail;
-        list->tail = add;
+        list->tail->next = new_node;
+        new_node->pre = list->tail;
+        list->tail = new_node;
     }
     else
     {
         // linkBefore
         ChainNode *right = get_node(list, index);
         ChainNode *left = right->pre;
-        add->pre = left;
-        add->next = right;
+        new_node->pre = left;
+        new_node->next = right;
 
-        right->pre = add;
+        right->pre = new_node;
         if (left)
-            left->next = add;
+            left->next = new_node;
         else
-            list->head = add;
+            list->head = new_node;
     }
     list->size++;
 }
@@ -89,7 +89,7 @@ void add(LinkedList *list, int index, int value)
  * @param index the index of the element to be removed
  * @return the element previously at the specified position
  */
-int remove(LinkedList *list, int index)
+int remove_node(LinkedList *list, int index)
 {
     if (!is_element_index(list, index))
         return INT_MIN;
@@ -143,7 +143,7 @@ ChainNode *get_node(LinkedList *list, int index)
 
     ChainNode *p = NULL;
     int i = 0;
-    if (index < list->size / 2)
+    if (index < list->size >> 1)
     {
         p = list->head;
         while (i++ < index)
@@ -263,7 +263,7 @@ void enqueue(LinkedList *list, int value)
 
 int dequeue(LinkedList *list)
 {
-    return remove(list, 0);
+    return remove_node(list, 0);
 }
 
 /**
@@ -274,18 +274,17 @@ int dequeue(LinkedList *list)
  *
  * @param list
  */
-void print_string(LinkedList *list)
+void to_string(LinkedList *list)
 {
-    if (list->size == 0)
+    printf("[");
+    if (list->size > 0)
     {
-        printf("[]\n");
-        return;
-    }
-    ChainNode *p = list->head;
-    printf("[%d", p->value);
-    while (p = p->next)
-    {
-        printf(", %d", p->value);
+        ChainNode *p = list->head;
+        printf("%d", p->value);
+        while (p = p->next)
+        {
+            printf(", %d", p->value);
+        }
     }
     printf("]\n");
 }

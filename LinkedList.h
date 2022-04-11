@@ -29,7 +29,7 @@ _Bool is_position_index(LinkedList *list, int index);
 
 void add(LinkedList *list, int index, int value);
 
-int remove(LinkedList *list, int index);
+int remove_node(LinkedList *list, int index);
 
 int set(LinkedList *list, int index, int value);
 
@@ -51,6 +51,6 @@ void enqueue(LinkedList *list, int value);
 
 int dequeue(LinkedList *list);
 
-void print_string(LinkedList *list);
+void to_string(LinkedList *list);
 
 #endif // _LINKED_LIST_H
